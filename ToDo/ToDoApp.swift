@@ -12,9 +12,12 @@ import SwiftData
 struct ToDoApp: App {
     var sharedModelContainer: ModelContainer = {
         let schema = Schema([
-            Item.self,
+            TodoItem.self,
         ])
-        let modelConfiguration = ModelConfiguration(schema: schema, isStoredInMemoryOnly: false)
+        let modelConfiguration = ModelConfiguration(schema: schema,
+                                                    isStoredInMemoryOnly: false,
+                                                    cloudKitDatabase: .automatic)
+        // swiftData를 cloudeKit에 연결
 
         do {
             return try ModelContainer(for: schema, configurations: [modelConfiguration])
