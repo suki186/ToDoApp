@@ -11,41 +11,39 @@ import SwiftData
 struct ContentView: View {
     @Environment(\.modelContext) private var modelContext
     @Query private var todos: [TodoItem]
+    
+    @State private var showAddTodo: Bool = false
 
     var body: some View {
-        NavigationSplitView {
+        NavigationStack {
             List {
                 ForEach(todos) { item in
                     NavigationLink {
-                        Text("Item at \(item.createdAt, format: Date.FormatStyle(date: .numeric, time: .standard))")
+                        TodoDetailView(item: item)
                     } label: {
-                        Text(item.createdAt, format: Date.FormatStyle(date: .numeric, time: .standard))
+                        Text("\(item.title) at \(item.createdAt, format: Date.FormatStyle(date: .numeric, time: .standard))")
                     }
                 }
-                .onDelete(perform: deleteItems)
+                .onDelete(perform: deleteItems) // 옆으로 밀면 삭제되는
             }
+            .navigationTitle("Today's Todo")
             .toolbar {
                 ToolbarItem(placement: .navigationBarTrailing) {
                     EditButton()
                 }
                 ToolbarItem {
-                    Button(action: addItem) {
+                    Button(action: {showAddTodo = true}) {
                         Label("Add Item", systemImage: "plus")
                     }
                 }
             }
-        } detail: {
-            Text("Select an item")
+        }
+        .sheet(isPresented: $showAddTodo) {
+            AddTodoView() // Todo 생성 페이지
         }
     }
 
-    private func addItem() {
-        withAnimation {
-            let newItem = TodoItem(title: "New Item")
-            modelContext.insert(newItem)
-        }
-    }
-
+    // TodoItem 삭제
     private func deleteItems(offsets: IndexSet) {
         withAnimation {
             for index in offsets {
@@ -59,3 +57,5 @@ struct ContentView: View {
     ContentView()
         .modelContainer(for: TodoItem.self, inMemory: true)
 }
+
+
