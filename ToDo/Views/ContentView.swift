@@ -37,5 +37,6 @@ struct ContentView: View {
 
 #Preview {
     ContentView()
-        .modelContainer(for: TodoItem.self, inMemory: true)
+        //.modelContainer(for: TodoItem.self, inMemory: true)
+        .modelContainer(PreviewContainer.shared.container) // 더미데이터 적용
 }
