@@ -29,14 +29,14 @@ struct EditTodoView: View {
             }
             .navigationTitle(Text("Edit Todo"))
             .toolbar {
-                ToolbarItem(placement: .navigationBarLeading) {
+                ToolbarItem(placement: .navigationBarTrailing) {
                     Button("Save") {
                         todo.title = title
                         //modelContext.insert(todo)
                         dismiss() // 자동으로 modelContext 호출
                     } // 수정 후 저장
                 }
-                ToolbarItem(placement: .navigationBarTrailing) {
+                ToolbarItem(placement: .navigationBarLeading) {
                     Button("Cancel") {
                         dismiss()
                     }
